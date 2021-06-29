@@ -7,8 +7,6 @@
 #ifdef __IS_EMBEDDED_SYSTEM
 
 #include "cmsis_compiler.h"
-#include "FreeRTOS.h"
-#include "string.h"
 
 /* stdio interface */
 //#define printf(fmt,...)
@@ -65,7 +63,7 @@ __STATIC_INLINE int isatty(int x)
     return 0;
 }
 
-__STATIC_INLINE int fileno(__FILE *p) 
+__STATIC_INLINE int fileno(void *p) 
 {
     return 0;
 }
