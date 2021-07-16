@@ -1,10 +1,11 @@
 #ifndef _H_MESCH_CONF
 #define _H_MESCH_CONF
 
-#define __IS_EMBEDDED_SYSTEM 1
+/////////////////////////////////////////////////////////
+//            for cortex-m embedded system
+/////////////////////////////////////////////////////////
 
-/* if use embedded system, like: stm32, enable it ! */
-#ifdef __IS_EMBEDDED_SYSTEM
+#define __IS_EMBEDDED_SYSTEM
 
 #include "cmsis_compiler.h"
 
@@ -17,6 +18,7 @@
 __STATIC_INLINE void __endless_loop() 
 {
     __BKPT(0);
+    while (1);
 }
 #else
 __STATIC_INLINE void __endless_loop() 
@@ -67,7 +69,5 @@ __STATIC_INLINE int fileno(void *p)
 {
     return 0;
 }
-
-#endif
 
 #endif

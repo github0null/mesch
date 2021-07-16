@@ -16,6 +16,8 @@
 #if __has_include("mesch_conf.h")
 #include "mesch_conf.h"
 #endif
+#else
+#include "mesch_conf.h"
 #endif
 
 /* memory alloc is thread safe */

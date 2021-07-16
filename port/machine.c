@@ -31,9 +31,7 @@
   processors etc).
   */
 
-static	char	*rcsid = "$Id: machine.c,v 1.4 1994/01/13 05:28:56 des Exp $";
-
-#include	"machine.h"
+#include "machine.h"
 
 /* __ip__ -- inner product */
 #ifndef ANSI_C
