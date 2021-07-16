@@ -28,9 +28,6 @@
 	Matrix factorisation routines to work with the other matrix files.
 */
 
-/* CHfactor.c 1.2 11/25/87 */
-static	char	rcsid[] = "$Id: chfactor.c,v 1.2 1994/01/13 05:36:36 des Exp $";
-
 #include	<stdio.h>
 #include	<math.h>
 #include	"matrix.h"

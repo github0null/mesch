@@ -33,9 +33,6 @@
 	row and by column.
 */
 
-/* givens.c 1.2 11/25/87 */
-static	char	rcsid[] = "$Id: givens.c,v 1.3 1995/03/27 15:41:15 des Exp $";
-
 #include	<stdio.h>
 #include	<math.h>
 #include	"matrix.h"

@@ -32,7 +32,7 @@
 	Complex version.
 */
 
-static	char	rcsid[] = "$Id: ";
+// static	char	rcsid[] = "$Id: ";
 
 #include	<stdio.h>
 #include	<math.h>

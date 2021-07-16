@@ -34,8 +34,6 @@
 #include	"matrix.h"
 #include	"sparse.h"
 
-static char rcsid[] = "$Id: lanczos.c,v 1.4 1994/01/13 05:28:24 des Exp $";
-
 #ifdef ANSI_C
 extern	VEC	*trieig(VEC *,VEC *,MAT *);
 #else

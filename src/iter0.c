@@ -39,10 +39,6 @@
 #include	<math.h>
 #include        "iter.h"
 
-
-static char rcsid[] = "$Id: iter0.c,v 1.3 1995/01/30 14:50:56 des Exp $";
-
-
 /* standard functions */
 
 /* standard information */
