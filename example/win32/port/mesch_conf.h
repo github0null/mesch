@@ -8,6 +8,7 @@
 /* memory alloc is thread safe */
 #define THREADSAFE 1
 
+/* #undef MALLOCDECL */
 #define NOT_SEGMENTED 1
 /* #undef HAVE_COMPLEX_H */
 #define HAVE_MALLOC_H 1
@@ -20,7 +21,7 @@
 #define VARARGS 1
 
 /* for basic or larger versions */
-#define COMPLEX 1
+//#define COMPLEX 1
 #define SPARSE 1
 
 /* for loop unrolling */
@@ -37,11 +38,7 @@
 
 #define __IS_EMBEDDED_SYSTEM
 
-// TODO:
-// include your headers. like: 
-//   #include "cmsis_compiler.h"
-//   ...
-//
+#define __STATIC_INLINE static inline
 
 #ifdef DEBUG
 __STATIC_INLINE void __endless_loop() 
@@ -89,14 +86,14 @@ __STATIC_INLINE void __endless_loop()
 
 /* other interface */
 
-__STATIC_INLINE int isatty(int x) 
-{
-    return 0;
-}
+// __STATIC_INLINE int isatty(int x) 
+// {
+//     return 0;
+// }
 
-__STATIC_INLINE int fileno(void *p) 
-{
-    return 0;
-}
+// __STATIC_INLINE int fileno(void *p) 
+// {
+//     return 0;
+// }
 
 #endif
