@@ -1,3 +1,93 @@
+################################
+#        应用程序生成配置
+################################
+
+# 输出根目录
+BUILD_ROOT := build
+
+# 可执行文件名称
+EXE_NAME := main
+
+# 输出二进制类型，默认：elf
+# 可选值：static_lib, elf
+OUTPUT_TYPE := elf
+
+# 输出目录
+ifeq ($(CWD),)
+	BUILD_DIR = $(BUILD_ROOT)
+else
+	BUILD_DIR = $(BUILD_ROOT)/$(CWD)
+endif
+
+# 要生成的可执行文件列表
+ifeq ($(OUTPUT_TYPE),static_lib)
+	ifeq ($(AR_SUFFIX),a)
+		EXE_NAME := lib$(EXE_NAME)
+	endif
+	EXE_FILES += $(BUILD_DIR)/$(EXE_NAME).$(AR_SUFFIX)
+else
+	EXE_FILES += $(BUILD_DIR)/$(EXE_NAME).$(ELF_SUFFIX)
+endif
+
+#############################
+# 此处添加包含目录，源文件
+
+MESCH_SDK_ROOT := ../..
+
+INCLUDE_FOLDERS += . \
+	port \
+	$(MESCH_SDK_ROOT)/include \
+
+C_SOURCES += \
+	main.c \
+	port/machine.c
+
+C_SOURCES += \
+	$(MESCH_SDK_ROOT)/src/hsehldr.c \
+	$(MESCH_SDK_ROOT)/src/vecop.c \
+	$(MESCH_SDK_ROOT)/src/sprow.c \
+	$(MESCH_SDK_ROOT)/src/sparse.c \
+	$(MESCH_SDK_ROOT)/src/solve.c \
+	$(MESCH_SDK_ROOT)/src/pxop.c \
+	$(MESCH_SDK_ROOT)/src/core/init.c \
+	$(MESCH_SDK_ROOT)/src/core/copy.c \
+	$(MESCH_SDK_ROOT)/src/core/submat.c \
+	$(MESCH_SDK_ROOT)/src/core/matop.c \
+	$(MESCH_SDK_ROOT)/src/factor/ivecop.c \
+	$(MESCH_SDK_ROOT)/src/factor/lufactor.c \
+	$(MESCH_SDK_ROOT)/src/factor/qrfactor.c \
+	$(MESCH_SDK_ROOT)/src/factor/bdfactor.c \
+	$(MESCH_SDK_ROOT)/src/mem/meminfo.c \
+	$(MESCH_SDK_ROOT)/src/mem/memory.c \
+	$(MESCH_SDK_ROOT)/src/mem/memstat.c \
+	$(MESCH_SDK_ROOT)/src/iter0.c \
+	$(MESCH_SDK_ROOT)/src/io/matrixio.c
+
+CPP_SOURCES +=
+
+ASM_SOURCES +=
+
+OBJ_SOURCES +=
+
+SOURCE_DIRS += 
+
+###############################
+# 此处添加编译参数
+
+# CFLAGS
+CFLAGS += -c -MMD -ffunction-sections -fdata-sections
+
+# CXXFLAGS
+CXXFLAGS +=
+
+# ASMFLAGS
+ASMFLAGS +=
+
+# LDFLAGS
+LDFLAGS += -Wl,--gc-sections
+
+# LDLIBS
+LDLIBS += -lm
 
 ########################################
 #        编译器全局配置，必填
@@ -8,7 +98,7 @@
 CC_FOLDER = D:/TDM-GCC-32/bin/
 
 # 编译器前缀
-CC_PREFIX = 
+CC_PREFIX =
 
 # 编译器可执行文件
 CC = $(CC_FOLDER)$(CC_PREFIX)gcc
@@ -46,84 +136,6 @@ OBJ_SUFFIX = o
 ELF_SUFFIX = exe
 AR_SUFFIX = a
 
-################################
-#        应用程序生成配置
-################################
-
-# 输出根目录
-BUILD_ROOT = build
-
-# 可执行文件名称
-EXE_NAME := main
-
-# 输出目录
-BUILD_DIR := $(BUILD_ROOT)
-
-# 输出二进制类型，默认：elf，可选值：static_lib, elf
-OUTPUT_TYPE := elf
-
-# 要生成的可执行文件列表
-ifeq ($(OUTPUT_TYPE),static_lib)
-ifeq ($(AR_SUFFIX),a)
-EXE_NAME := lib$(EXE_NAME)
-endif
-EXE_FILES += $(BUILD_DIR)/$(EXE_NAME).$(AR_SUFFIX)
-else
-EXE_FILES += $(BUILD_DIR)/$(EXE_NAME).$(ELF_SUFFIX)
-endif
-
-#############################
-# 此处添加包含目录，源文件
-
-MESCH_SDK_ROOT = ../..
-
-INCLUDE_FOLDERS += . \
-	port \
-	$(MESCH_SDK_ROOT)/include \
-
-C_SOURCES += \
-	main.c \
-	port/machine.c
-
-C_SOURCES += \
-	$(MESCH_SDK_ROOT)/src/hsehldr.c \
-	$(MESCH_SDK_ROOT)/src/vecop.c \
-	$(MESCH_SDK_ROOT)/src/sprow.c \
-	$(MESCH_SDK_ROOT)/src/sparse.c \
-	$(MESCH_SDK_ROOT)/src/solve.c \
-	$(MESCH_SDK_ROOT)/src/pxop.c \
-	$(MESCH_SDK_ROOT)/src/core/init.c \
-	$(MESCH_SDK_ROOT)/src/core/copy.c \
-	$(MESCH_SDK_ROOT)/src/core/submat.c \
-	$(MESCH_SDK_ROOT)/src/core/matop.c \
-	$(MESCH_SDK_ROOT)/src/factor/ivecop.c \
-	$(MESCH_SDK_ROOT)/src/factor/lufactor.c \
-	$(MESCH_SDK_ROOT)/src/factor/qrfactor.c \
-	$(MESCH_SDK_ROOT)/src/factor/bdfactor.c \
-	$(MESCH_SDK_ROOT)/src/mem/meminfo.c \
-	$(MESCH_SDK_ROOT)/src/mem/memory.c \
-	$(MESCH_SDK_ROOT)/src/mem/memstat.c \
-	$(MESCH_SDK_ROOT)/src/iter0.c \
-	$(MESCH_SDK_ROOT)/src/io/matrixio.c
-
-###############################
-# 此处添加编译参数
-
-# CFLAGS
-CFLAGS += -c -MMD -ffunction-sections -fdata-sections
-
-# CXXFLAGS
-CXXFLAGS +=
-
-# ASMFLAGS
-ASMFLAGS +=
-
-# LDFLAGS
-LDFLAGS += -Wl,--gc-sections
-
-# LDLIBS
-LDLIBS +=
-
 #############################################################
 # Append Args (DON'T MODIFY THE FOLLOWING CONTENTS)
 #############################################################
@@ -137,7 +149,7 @@ LDFLAGS += $(LIB_INC)
 
 C_FILTER := %.c
 CPP_FILTER := %.cpp %c++ %cxx %cc
-ASM_FILTER := %.asm %.s %.a51
+ASM_FILTER := %.asm %.s %.S
 OBJ_FILTER := %.o %.lib %.a %.obj
 
 # C sources
@@ -156,8 +168,6 @@ OBJ_SRC = $(foreach path,$(filter $(OBJ_FILTER),$(OBJ_SOURCES)),$(path))
 # START BUILD THE APPLICATION (DON'T MODIFY THE FOLLOWING CONTENTS !!!)
 ############################################################################
 
-all: $(EXE_FILES)
-
 # print color
 COLOR_END = "\e[0m"
 COLOR_WARN = "\e[33;1m"
@@ -165,10 +175,12 @@ COLOR_DONE = "\e[32;1m"
 COLOR_ERR = "\e[31;1m"
 
 # merge all objs
-OBJS += $(addprefix $(BUILD_DIR)/,$(notdir $(addsuffix .$(OBJ_SUFFIX),$(basename $(C_SRC))))) \
-		$(addprefix $(BUILD_DIR)/,$(notdir $(addsuffix .$(OBJ_SUFFIX),$(basename $(CPP_SRC))))) \
-		$(addprefix $(BUILD_DIR)/,$(notdir $(addsuffix .$(OBJ_SUFFIX),$(basename $(ASM_SRC))))) \
+OBJS += $(addprefix $(BUILD_DIR)/,$(addsuffix .$(OBJ_SUFFIX),$(basename $(subst ..,__,$(C_SRC))))) \
+		$(addprefix $(BUILD_DIR)/,$(addsuffix .$(OBJ_SUFFIX),$(basename $(subst ..,__,$(CPP_SRC))))) \
+		$(addprefix $(BUILD_DIR)/,$(addsuffix .$(OBJ_SUFFIX),$(basename $(subst ..,__,$(ASM_SRC))))) \
 		$(OBJ_SRC)
+
+SUB_DIRS += $(SOURCE_DIRS)
 
 # add source search folder
 vpath %.c $(sort $(dir $(C_SRC)))
@@ -178,37 +190,18 @@ vpath %.cxx $(sort $(dir $(CPP_SRC)))
 vpath %.c++ $(sort $(dir $(CPP_SRC)))
 vpath %.s $(sort $(dir $(ASM_SRC)))
 vpath %.asm $(sort $(dir $(ASM_SRC)))
-vpath %.a51 $(sort $(dir $(ASM_SRC)))
+vpath %.S $(sort $(dir $(ASM_SRC)))
 
-# compile C source file
-$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.c Makefile | $(BUILD_DIR) 
-	@echo CC '$<' ...
-	@$(CC) $(CFLAGS) $< $(CC_OUT_CMD) $@
+#################
+# all
+all: $(SUB_DIRS) $(EXE_FILES)
+	@mkdir -p $(BUILD_DIR)
 
-# compile CPP source file
-$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.cpp Makefile | $(BUILD_DIR) 
-	@echo CC '$<' ...
-	@$(CC) $(CXXFLAGS) $< $(CC_OUT_CMD) $@
-$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.cc Makefile | $(BUILD_DIR) 
-	@echo CC '$<' ...
-	@$(CC) $(CXXFLAGS) $< $(CC_OUT_CMD) $@
-$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.cxx Makefile | $(BUILD_DIR) 
-	@echo CC '$<' ...
-	@$(CC) $(CXXFLAGS) $< $(CC_OUT_CMD) $@
-$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.c++ Makefile | $(BUILD_DIR) 
-	@echo CC '$<' ...
-	@$(CC) $(CXXFLAGS) $< $(CC_OUT_CMD) $@
+$(BUILD_DIR):
+	@mkdir -p $@
 
-# compile ASM program objects
-$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.s Makefile | $(BUILD_DIR)
-	@echo AS '$<' ...
-	@$(AS) $(ASMFLAGS) $< $(AS_OUT_CMD) $@
-$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.asm Makefile | $(BUILD_DIR)
-	@echo AS '$<' ...
-	@$(AS) $(ASMFLAGS) $< $(AS_OUT_CMD) $@
-$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.a51 Makefile | $(BUILD_DIR)
-	@echo AS '$<' ...
-	@$(AS) $(ASMFLAGS) $< $(AS_OUT_CMD) $@
+$(SUB_DIRS):
+	@make -C $@ CWD=$@
 
 # link executable file
 $(BUILD_DIR)/$(EXE_NAME).$(ELF_SUFFIX): $(OBJS) Makefile | $(BUILD_DIR)
@@ -240,16 +233,55 @@ ifdef BIN
 else
 	@echo -e $(COLOR_WARN)"Not found bin command. Skip output bin file !"$(COLOR_END)
 endif
-	
-$(BUILD_DIR):
-	mkdir $@		
+
+# compile c source
+$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.c Makefile | $(BUILD_DIR) 
+	@echo CC '$(subst __,..,$<)' ...
+	@mkdir -p $(BUILD_DIR)/$(dir $<)
+	@$(CC) $(CFLAGS) $(subst __,..,$<) $(CC_OUT_CMD) $@
+
+# compile c++ source
+$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.cpp Makefile | $(BUILD_DIR) 
+	@echo CXX '$(subst __,..,$<)' ...
+	@mkdir -p $(BUILD_DIR)/$(dir $<)
+	@$(CC) $(CXXFLAGS) $(subst __,..,$<) $(CC_OUT_CMD) $@
+$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.c++ Makefile | $(BUILD_DIR) 
+	@echo CXX '$(subst __,..,$<)' ...
+	@mkdir -p $(BUILD_DIR)/$(dir $<)
+	@$(CC) $(CXXFLAGS) $(subst __,..,$<) $(CC_OUT_CMD) $@
+$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.cxx Makefile | $(BUILD_DIR) 
+	@echo CXX '$(subst __,..,$<)' ...
+	@mkdir -p $(BUILD_DIR)/$(dir $<)
+	@$(CC) $(CXXFLAGS) $(subst __,..,$<) $(CC_OUT_CMD) $@
+$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.cc Makefile | $(BUILD_DIR) 
+	@echo CXX '$(subst __,..,$<)' ...
+	@mkdir -p $(BUILD_DIR)/$(dir $<)
+	@$(CC) $(CXXFLAGS) $(subst __,..,$<) $(CC_OUT_CMD) $@
+
+# compile asm source
+$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.s Makefile | $(BUILD_DIR) 
+	@echo AS '$(subst __,..,$<)' ...
+	@mkdir -p $(BUILD_DIR)/$(dir $<)
+	@$(AS) $(ASMFLAGS) $(subst __,..,$<) $(AS_OUT_CMD) $@
+$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.S Makefile | $(BUILD_DIR) 
+	@echo AS '$(subst __,..,$<)' ...
+	@mkdir -p $(BUILD_DIR)/$(dir $<)
+	@$(AS) $(ASMFLAGS) $(subst __,..,$<) $(AS_OUT_CMD) $@
+$(BUILD_DIR)/%.$(OBJ_SUFFIX): %.asm Makefile | $(BUILD_DIR) 
+	@echo AS '$(subst __,..,$<)' ...
+	@mkdir -p $(BUILD_DIR)/$(dir $<)
+	@$(AS) $(ASMFLAGS) $(subst __,..,$<) $(AS_OUT_CMD) $@
+
+# check source files
+%.c %.cc %.cpp %.cxx %.c++:
+	@ls -l $(subst __,..,$@) >/dev/null
+
+%.s %.S %.asm:
+	@ls -l $(subst __,..,$@) >/dev/null
 
 #####################
 # CLEAN ALL OBJECTS
-#####################
-.PHONY : clean
 clean:
-	-rm -fR $(BUILD_DIR)/*.$(OBJ_SUFFIX)
-	-rm -fR $(BUILD_DIR)/*.$(ELF_SUFFIX)
-	-rm -fR $(BUILD_DIR)/*.$(AR_SUFFIX) 
-	-rm -fR $(BUILD_DIR)/*.hex $(BUILD_DIR)/*.bin
+	-rm -fR $(BUILD_DIR)/*
+
+.PHONY : all clean $(SUB_DIRS)
