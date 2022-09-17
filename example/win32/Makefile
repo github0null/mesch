@@ -69,7 +69,7 @@ ASM_SOURCES +=
 
 OBJ_SOURCES +=
 
-SOURCE_DIRS += 
+SUB_DIRS +=
 
 ###############################
 # 此处添加编译参数
@@ -107,7 +107,7 @@ LD = $(CC_FOLDER)$(CC_PREFIX)gcc
 AR = $(CC_FOLDER)$(CC_PREFIX)gcc
 
 # binutils 可执行文件
-SZ = 
+SZ = $(CC_FOLDER)$(CC_PREFIX)size
 HEX = 
 BIN = 
 
@@ -174,28 +174,33 @@ COLOR_WARN = "\e[33;1m"
 COLOR_DONE = "\e[32;1m"
 COLOR_ERR = "\e[31;1m"
 
+# add source dep search folder
+vpath %.c $(dir $(C_SRC))
+vpath %.cpp $(dir $(CPP_SRC))
+vpath %.cc $(dir $(CPP_SRC))
+vpath %.cxx $(dir $(CPP_SRC))
+vpath %.c++ $(dir $(CPP_SRC))
+vpath %.s $(dir $(ASM_SRC))
+vpath %.asm $(dir $(ASM_SRC))
+vpath %.S $(dir $(ASM_SRC))
+vpath %.h $(dir $(INCLUDE_FOLDERS))
+vpath %.hpp $(dir $(INCLUDE_FOLDERS))
+vpath %.hxx $(dir $(INCLUDE_FOLDERS))
+vpath %.h++ $(dir $(INCLUDE_FOLDERS))
+
 # merge all objs
 OBJS += $(addprefix $(BUILD_DIR)/,$(addsuffix .$(OBJ_SUFFIX),$(basename $(subst ..,__,$(C_SRC))))) \
 		$(addprefix $(BUILD_DIR)/,$(addsuffix .$(OBJ_SUFFIX),$(basename $(subst ..,__,$(CPP_SRC))))) \
 		$(addprefix $(BUILD_DIR)/,$(addsuffix .$(OBJ_SUFFIX),$(basename $(subst ..,__,$(ASM_SRC))))) \
 		$(OBJ_SRC)
 
-SUB_DIRS += $(SOURCE_DIRS)
-
-# add source search folder
-vpath %.c $(sort $(dir $(C_SRC)))
-vpath %.cpp $(sort $(dir $(CPP_SRC)))
-vpath %.cc $(sort $(dir $(CPP_SRC)))
-vpath %.cxx $(sort $(dir $(CPP_SRC)))
-vpath %.c++ $(sort $(dir $(CPP_SRC)))
-vpath %.s $(sort $(dir $(ASM_SRC)))
-vpath %.asm $(sort $(dir $(ASM_SRC)))
-vpath %.S $(sort $(dir $(ASM_SRC)))
+DEPS = $(OBJS:.$(OBJ_SUFFIX)=.d)
 
 #################
-# all
+# rules
+
 all: $(SUB_DIRS) $(EXE_FILES)
-	@mkdir -p $(BUILD_DIR)
+	@echo -e $(COLOR_DONE)"#################### All Done ! ####################"$(COLOR_END)
 
 $(BUILD_DIR):
 	@mkdir -p $@
@@ -210,13 +215,11 @@ $(BUILD_DIR)/$(EXE_NAME).$(ELF_SUFFIX): $(OBJS) Makefile | $(BUILD_DIR)
 ifdef SZ
 	@$(SZ) $@
 endif
-	@echo -e $(COLOR_DONE)"#################### Build successfully ! ####################"$(COLOR_END)
 
 # static lib
 $(BUILD_DIR)/$(EXE_NAME).$(AR_SUFFIX): $(OBJS) Makefile | $(BUILD_DIR)
 	@echo AR '$@' ...
-	@$(AR) $(AR_OUT_CMD) $@ $(AR_FLAGS) $(OBJS) 
-	@echo -e $(COLOR_DONE)"#################### Archive lib successfully ! ####################"$(COLOR_END)
+	@$(AR) $(AR_OUT_CMD) $@ $(AR_FLAGS) $(OBJS)
 
 # generate hex
 $(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.$(ELF_SUFFIX) | $(BUILD_DIR)
@@ -272,12 +275,19 @@ $(BUILD_DIR)/%.$(OBJ_SUFFIX): %.asm Makefile | $(BUILD_DIR)
 	@mkdir -p $(BUILD_DIR)/$(dir $<)
 	@$(AS) $(ASMFLAGS) $(subst __,..,$<) $(AS_OUT_CMD) $@
 
+# include deps
+-include $(DEPS)
+
 # check source files
 %.c %.cc %.cpp %.cxx %.c++:
 	@ls -l $(subst __,..,$@) >/dev/null
 
 %.s %.S %.asm:
 	@ls -l $(subst __,..,$@) >/dev/null
+
+# override default rules
+%.d:
+	@echo >/dev/null
 
 #####################
 # CLEAN ALL OBJECTS
